@@ -5,6 +5,7 @@ description = "An unofficial asynchronous SDK for Lostark Open API written in Py
 authors = ["Mary <mareowst@gmail.com>"]
 license = "MIT License"
 readme = "README.md"
+include = ["loapy/py.typed"]
 
 [tool.poetry.dependencies]
 python = "^3.7"
