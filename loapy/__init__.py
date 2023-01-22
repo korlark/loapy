@@ -1,6 +1,6 @@
 __version__ = "0.1.0"
 
-from .client import LostArkRest as LostArkRest
+from .http import LostArkRest as LostArkRest
 from .errors import BadGateway as BadGateway
 from .errors import Forbidden as Forbidden
 from .errors import GatewayTimeout as GatewayTimeout

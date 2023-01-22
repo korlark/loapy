@@ -1,5 +1,6 @@
 from asyncio import Future, create_task, sleep
 from collections import deque
+from logging import getLogger
 from time import time
 from typing import Any, ClassVar, List, Literal, Mapping, Optional
 
@@ -34,6 +35,8 @@ from .types.characters import CharacterInfo
 from .types.guilds import GuildRanking
 from .types.markets import MarketItem, MarketList, MarketOption, RequestMarketItems
 from .types.news import Event
+
+logger = getLogger("loapy.http")
 
 
 class RateLimit:
@@ -71,6 +74,15 @@ class RateLimit:
         if response.status == 429:
             self.remaining = 0
             self.reset_at = int(time()) + int(response.headers["Retry-After"])
+
+            logger.info(
+                "Unexpected rate limit exceeded, remaining capacity initialized"
+            )
+
+        elif self.remaining == 0:
+            logger.info(
+                "Expected to exceed rate limit, Preemptive rate limiting started."
+            )
 
     def reset(self) -> None:
         self.remaining = self.limit - self.pending
@@ -159,6 +171,8 @@ class LostArkRest:
                 data=None if json is not None else ujson.dumps(json),
                 params=params,
             ) as response:
+                logger.debug(f"{method} {endpoint} returned {response.status}")
+
                 self.__ratelimit.update(response)
 
                 if response.status == 200:
