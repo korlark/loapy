@@ -1,5 +1,8 @@
 # loapy
 
+![PyPI](https://img.shields.io/pypi/v/loapy?logo=pypi)
+![PyPI - License](https://img.shields.io/pypi/l/loapy)
+
 An unofficial asynchronous SDK for Lostark Open API written in Python.
 
 ## Installation
