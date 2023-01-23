@@ -4,7 +4,7 @@ An unofficial asynchronous SDK for Lostark Open API written in Python.
 
 ## Installation
 
-**Loapy requires Python 3.7 or higher**
+**loapy requires Python 3.7 or higher**
 
 ```sh
 python -m pip install --upgrade loapy
