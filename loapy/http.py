@@ -32,9 +32,14 @@ from .types.armories import (
 )
 from .types.auctions import Auction, AuctionOption, RequestAuctionItems
 from .types.characters import CharacterInfo
+from .types.gamecontents import (
+    ChallengeAbyssDungeon,
+    ChallengeGuardianRaid,
+    ContentsCalendar,
+)
 from .types.guilds import GuildRanking
 from .types.markets import MarketItem, MarketList, MarketOption, RequestMarketItems
-from .types.news import Event
+from .types.news import Event, Notice, NoticeType
 
 logger = getLogger("loapy.http")
 
@@ -202,7 +207,21 @@ class LostArkRest:
     async def fetch_events(self) -> List[Event]:
         """Returns a list of events on progress."""
 
-        return await self.request("GET", "/News/Event")
+        return await self.request("GET", "/news/events")
+
+    async def fetch_notices(
+        self, search_text: Optional[str] = None, type: Optional[NoticeType] = None
+    ) -> List[Notice]:
+        """Returns a list of notices."""
+
+        params = {}
+
+        if search_text is not None:
+            params["searchText"] = search_text
+        if type is not None:
+            params["type"] = type
+
+        return await self.request("GET", "/news/notices", params=params)
 
     # https://developer-lostark.game.onstove.com/getting-started#API-CHARACTERS
 
@@ -321,3 +340,20 @@ class LostArkRest:
         return await self.request(
             "POST", "/markets/items", json={"requestMarketItems": request_market_items}
         )
+
+    # https://developer-lostark.game.onstove.com/getting-started#API-GAMECONTENTS
+
+    async def fetch_challenge_abyss_dungeons(self) -> List[ChallengeAbyssDungeon]:
+        """Returns a list of challenge abyss dungeons this week."""
+
+        return await self.request("GET", "/gamecontents/challenge-abyss-dungeons")
+
+    async def fetch_challenge_guardian_raids(self) -> List[ChallengeGuardianRaid]:
+        """Returns a list of challenge guardian raids this week."""
+
+        return await self.request("GET", "/gamecontents/challenge-guardian-raids")
+
+    async def fetch_calendar(self) -> List[ContentsCalendar]:
+        """Returns a list of Calendar this week."""
+
+        return await self.request("GET", "/gamecontents/calendar")
