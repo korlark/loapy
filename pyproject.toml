@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "loapy"
-version = "0.1.0"
+version = "2.0.0.0"
 description = "An unofficial asynchronous SDK for Lostark Open API written in Python."
 authors = ["Mary <mareowst@gmail.com>"]
 license = "MIT License"
