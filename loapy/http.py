@@ -5,7 +5,7 @@ from time import time
 from typing import Any, ClassVar, List, Literal, Mapping, Optional
 
 import ujson
-from aiohttp import ClientResponse, ClientSession
+from aiohttp import BaseConnector, ClientResponse, ClientSession
 from typing_extensions import Self
 
 from . import __version__
@@ -142,16 +142,20 @@ class RateLimit:
 class LostArkRest:
     BASE: ClassVar[str] = "https://developer-lostark.game.onstove.com"
 
-    __slots__ = ("token", "__session", "__ratelimit")
+    __slots__ = ("token", "__connector", "__session", "__ratelimit")
 
-    def __init__(self, token: str) -> None:
+    def __init__(
+        self, token: str, *, connector: Optional[BaseConnector] = None
+    ) -> None:
         self.token = token
+
+        self.__connector: Optional[BaseConnector] = connector
 
         self.__session: Optional[ClientSession] = None
         self.__ratelimit: RateLimit = RateLimit()
 
     def __create_session(self) -> ClientSession:
-        return ClientSession(self.BASE)
+        return ClientSession(self.BASE, connector=self.__connector)
 
     async def request(
         self,
