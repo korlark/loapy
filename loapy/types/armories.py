@@ -2,6 +2,20 @@ from __future__ import annotations  # for postponed evaluation of annotations
 
 from typing import List, TypedDict
 
+from typing_extensions import NotRequired
+
+
+class Character(TypedDict):
+    ArmoryProfile: NotRequired[ArmoryProfile]
+    ArmoryEquipment: NotRequired[ArmoryEquipment]
+    ArmoryAvatar: NotRequired[List[ArmoryAvatar]]
+    ArmorySkills: NotRequired[List[ArmorySkill]]
+    ArmoryEngraving: NotRequired[ArmoryEngraving]
+    ArmoryCard: NotRequired[ArmoryCard]
+    ArmoryGem: NotRequired[ArmoryGem]
+    ColosseumInfo: NotRequired[ColosseumInfo]
+    Collectible: NotRequired[Collectible]
+
 
 class ArmoryProfile(TypedDict):
     CharacterImage: str

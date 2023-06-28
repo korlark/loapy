@@ -27,6 +27,7 @@ from .types.armories import (
     ArmoryGem,
     ArmoryProfile,
     ArmorySkill,
+    Character,
     Collectible,
     ColosseumInfo,
 )
@@ -235,6 +236,45 @@ class LostArkRest:
         return await self.request("GET", f"/characters/{character_name}/siblings")
 
     # https://developer-lostark.game.onstove.com/getting-started#API-ARMORIES
+
+    async def fetch_character(
+        self,
+        character_name: str,
+        *,
+        profiles: bool = True,
+        equipment: bool = True,
+        avatars: bool = True,
+        combat_skills: bool = True,
+        engravings: bool = True,
+        cards: bool = True,
+        gems: bool = True,
+        colosseums: bool = True,
+        collectibles: bool = True,
+    ) -> Character:
+        """Returns a summary of profile information by a character name."""
+
+        filters = list(
+            filter(
+                None,
+                [
+                    "profiles" if profiles else None,
+                    "equipment" if equipment else None,
+                    "avatars" if avatars else None,
+                    "combat-skills" if combat_skills else None,
+                    "engravings" if engravings else None,
+                    "cards" if cards else None,
+                    "gems" if gems else None,
+                    "colosseums" if colosseums else None,
+                    "collectibles" if collectibles else None,
+                ],
+            )
+        )
+
+        return await self.request(
+            "GET",
+            f"/armories/characters/{character_name}",
+            params={"filter": "+".join(filters)},
+        )
 
     async def fetch_profile(self, character_name: str) -> ArmoryProfile:
         """Returns a summary of the basic stats by a character name."""
